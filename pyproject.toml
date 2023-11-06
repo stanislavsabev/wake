@@ -1,0 +1,120 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+    name = "win-make"
+    description = "Build tool for windows, similar to make on Linux"
+version = "0.0.1"
+authors = [
+    {name = "Stanislav Sabev", email = "stanislav.sabev@gmail.com"},
+]
+readme = "README.md"
+license = {file =  "LICENSE"}
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+keywords = ["win", "windows", "cli", "project", "build", "make"]
+dependencies = [
+    "typer",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "coverage",
+    "mock",
+    "types-mock",
+    "black",
+    "mypy",
+    "isort",
+    "flake8",
+    "flake8-docstrings",
+    "Flake8-pyproject",
+    "pre-commit",
+    "tox",
+]
+
+[project.scripts]
+    win-make = "win_make.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/stanislavsabev/win-make"
+Repository = "https://github.com/stanislavsabev/win-make.git"
+"Bug Tracker" = "https://github.com/stanislavsabev/win-make/issues"
+Documentation = "https://github.com/stanislavsabev/win-make/blob/main/README.md"
+Usage = "https://github.com/stanislavsabev/win-make/blob/main/USAGE.md"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+
+[tool.tox]
+legacy_tox_ini = """
+    [tox]
+    min_version = 4.11.0
+    requires = tox-ignore-env-name-mismatch ~= 0.2.0
+
+    envlist = flake8,isort,format,types,py{310,311} 
+    isolated_build = true
+
+    [testenv]
+    deps = 
+        pytest>=7.4.3
+    commands = pytest tests
+
+    [testenv:{flake8,isort,format,types}]
+    description = run linters, formatters and type checks
+    env_dir = {toxworkdir}{/}static
+    runner = ignore_env_name_mismatch   
+    deps =
+        black>=23.10.0
+        flake8>=6.1.0
+        flake8-docstrings>=1.7.0
+        mypy>=1.6.0
+        isort>=5.12.0
+    commands =
+        python -c "print('Your envdir is: {envdir}')"
+        flake8: flake8 src tests
+        format: black --check src tests
+        isort: isort --check src tests
+        types: mypy {posargs:src}
+"""
+
+[tool.mypy]
+mypy_path = "src"
+check_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.flake8]
+per-file-ignores= "__init__:F401"
+ignore = [
+    "E203", "W503", "D100", "D104", "D107", "I900"
+]
+max-line-length = 99
+count = true
+max-complexity = 10
+docstring-convention = "google"
+exclude = [
+    "__pycache__",
+    ".venv",
+    "venv",
+    ".env",
+    "env",
+    ".tox",
+    "build",
+    "dist",
+    "docs/conf.py",
+    "run",
+    ".eggs",
+    ".git",
+    "requirements",
+]

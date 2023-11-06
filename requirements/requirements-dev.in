@@ -1,0 +1,14 @@
+-r requirements.txt
+pytest
+coverage
+mock
+types-mock
+black
+mypy
+isort
+flake8
+flake8-docstrings
+Flake8-pyproject
+pre-commit
+tox
+tox-ignore-env-name-mismatch
