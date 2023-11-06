@@ -6,10 +6,10 @@ build-backend = "setuptools.build_meta"
     name = "win-make"
     description = "Build tool for windows, similar to make on Linux"
 version = "0.0.1"
+dynamic = ["readme"]
 authors = [
     {name = "Stanislav Sabev", email = "stanislav.sabev@gmail.com"},
 ]
-readme = "README.md"
 license = {file =  "LICENSE"}
 requires-python = ">=3.10"
 classifiers = [
@@ -25,6 +25,9 @@ keywords = ["win", "windows", "cli", "project", "build", "make"]
 dependencies = [
     "typer",
 ]
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md", "USAGE.md"]}
 
 [project.optional-dependencies]
 dev = [
