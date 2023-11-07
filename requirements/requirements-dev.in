@@ -12,5 +12,6 @@ flake8-docstrings
 flake8-requirements
 Flake8-pyproject
 pre-commit
+pyproject-pre-commit
 tox
 tox-ignore-env-name-mismatch

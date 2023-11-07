@@ -4,10 +4,24 @@
 #
 #    pip-compile requirements/requirements-dev.in
 #
+attrs==23.1.0
+    # via flake8-bugbear
+autoflake==2.2.1
+    # via pyproject-pre-commit
+autopep8==2.0.4
+    # via pyproject-pre-commit
+bandit[toml]==1.7.5
+    # via
+    #   bandit
+    #   pyproject-pre-commit
 black==23.10.1
     # via
     #   -r requirements/requirements-dev.in
+    #   blacken-docs
     #   flake8-black
+    #   pyproject-pre-commit
+blacken-docs==1.16.0
+    # via pyproject-pre-commit
 cachetools==5.3.2
     # via tox
 cfgv==3.4.0
@@ -25,6 +39,8 @@ coverage==7.3.2
     # via -r requirements/requirements-dev.in
 distlib==0.3.7
     # via virtualenv
+docutils==0.20.1
+    # via restructuredtext-lint
 filelock==3.13.1
     # via
     #   tox
@@ -32,30 +48,103 @@ filelock==3.13.1
 flake8==6.1.0
     # via
     #   -r requirements/requirements-dev.in
+    #   flake8-annotations-complexity
     #   flake8-black
+    #   flake8-bugbear
+    #   flake8-builtins
+    #   flake8-comprehensions
+    #   flake8-debugger
     #   flake8-docstrings
+    #   flake8-executable
+    #   flake8-pep3101
+    #   flake8-print
     #   flake8-pyproject
     #   flake8-requirements
+    #   flake8-rst-docstrings
+    #   flake8-string-format
+    #   pep8-naming
+flake8-annotations-complexity==0.0.8
+    # via pyproject-pre-commit
 flake8-black==0.3.6
     # via -r requirements/requirements-dev.in
+flake8-bugbear==23.9.16
+    # via pyproject-pre-commit
+flake8-builtins==2.2.0
+    # via pyproject-pre-commit
+flake8-comprehensions==3.14.0
+    # via pyproject-pre-commit
+flake8-debugger==4.1.2
+    # via pyproject-pre-commit
 flake8-docstrings==1.7.0
-    # via -r requirements/requirements-dev.in
+    # via
+    #   -r requirements/requirements-dev.in
+    #   pyproject-pre-commit
+flake8-executable==2.1.3
+    # via pyproject-pre-commit
+flake8-pep3101==2.1.0
+    # via pyproject-pre-commit
+flake8-print==5.0.0
+    # via pyproject-pre-commit
 flake8-pyproject==1.2.3
-    # via -r requirements/requirements-dev.in
+    # via
+    #   -r requirements/requirements-dev.in
+    #   pyproject-pre-commit
 flake8-requirements==1.7.8
     # via -r requirements/requirements-dev.in
+flake8-rst-docstrings==0.3.0
+    # via pyproject-pre-commit
+flake8-string-format==0.3.0
+    # via pyproject-pre-commit
+gitdb==4.0.11
+    # via gitpython
+gitpython==3.1.40
+    # via bandit
 identify==2.5.31
     # via pre-commit
 iniconfig==2.0.0
     # via pytest
 isort==5.12.0
-    # via -r requirements/requirements-dev.in
+    # via
+    #   -r requirements/requirements-dev.in
+    #   pyproject-pre-commit
+linkify-it-py==2.0.2
+    # via markdown-it-py
+markdown-it-py[linkify]==2.2.0
+    # via
+    #   mdformat
+    #   mdformat-gfm
+    #   mdit-py-plugins
+    #   rich
 mccabe==0.7.0
     # via flake8
+mdformat==0.7.17
+    # via
+    #   mdformat-footnote
+    #   mdformat-frontmatter
+    #   mdformat-gfm
+    #   mdformat-tables
+    #   pyproject-pre-commit
+mdformat-footnote==0.1.1
+    # via pyproject-pre-commit
+mdformat-frontmatter==2.0.1
+    # via pyproject-pre-commit
+mdformat-gfm==0.3.5
+    # via pyproject-pre-commit
+mdformat-tables==0.4.1
+    # via mdformat-gfm
+mdit-py-plugins==0.3.5
+    # via
+    #   mdformat-footnote
+    #   mdformat-frontmatter
+    #   mdformat-gfm
+mdurl==0.1.2
+    # via markdown-it-py
 mock==5.1.0
     # via -r requirements/requirements-dev.in
 mypy==1.6.1
-    # via -r requirements/requirements-dev.in
+    # via
+    #   -r requirements/requirements-dev.in
+    #   pyproject-pre-commit
 mypy-extensions==1.0.0
     # via
     #   black
@@ -70,6 +159,10 @@ packaging==23.2
     #   tox
 pathspec==0.11.2
     # via black
+pbr==5.11.1
+    # via stevedore
+pep8-naming==0.13.3
+    # via pyproject-pre-commit
 platformdirs==3.11.0
     # via
     #   black
@@ -80,21 +173,52 @@ pluggy==1.3.0
     #   pytest
     #   tox
 pre-commit==3.5.0
-    # via -r requirements/requirements-dev.in
+    # via
+    #   -r requirements/requirements-dev.in
+    #   pyproject-pre-commit
 pycodestyle==2.11.1
-    # via flake8
+    # via
+    #   autopep8
+    #   flake8
+    #   flake8-debugger
+    #   flake8-print
+    #   pyproject-pre-commit
 pydocstyle==6.3.0
     # via flake8-docstrings
 pyflakes==3.1.0
-    # via flake8
+    # via
+    #   autoflake
+    #   flake8
+pygments==2.16.1
+    # via
+    #   flake8-rst-docstrings
+    #   rich
 pyproject-api==1.6.1
     # via tox
+pyproject-pre-commit==0.0.28
+    # via -r requirements/requirements-dev.in
 pytest==7.4.3
     # via -r requirements/requirements-dev.in
 pyyaml==6.0.1
-    # via pre-commit
+    # via
+    #   bandit
+    #   pre-commit
+restructuredtext-lint==1.4.0
+    # via flake8-rst-docstrings
+rich==13.6.0
+    # via bandit
+ruamel-yaml==0.18.5
+    # via mdformat-frontmatter
+ruamel-yaml-clib==0.2.8
+    # via ruamel-yaml
+shellcheck-py==0.9.0.6
+    # via pyproject-pre-commit
+smmap==5.0.1
+    # via gitdb
 snowballstemmer==2.2.0
     # via pydocstyle
+stevedore==5.1.0
+    # via bandit
 tox==4.11.3
     # via -r requirements/requirements-dev.in
 tox-ignore-env-name-mismatch==0.2.0.post2
@@ -108,6 +232,8 @@ typing-extensions==4.8.0
     #   -r requirements/requirements.txt
     #   mypy
     #   typer
+uc-micro-py==1.0.2
+    # via linkify-it-py
 virtualenv==20.24.6
     # via
     #   pre-commit

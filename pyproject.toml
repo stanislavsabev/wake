@@ -90,9 +90,13 @@ legacy_tox_ini = """
 """
 
 [tool.mypy]
-mypy_path = "src"
+files = "src/**/*.py"
+strict = true
+install_types = true
 check_untyped_defs = true
 ignore_missing_imports = true
+scripts_are_modules = true
+non_interactive = true
 
 [tool.flake8]
 per-file-ignores= "__init__:F401"
@@ -125,3 +129,17 @@ exclude = [
 
 [tool.black]
 line-length = 99
+
+[tool.autoflake]
+remove-all-unused-imports = true
+expand-star-imports = true
+remove-unused-variables = true
+remove-duplicate-keys = true
+
+[tool.isort]
+profile = "black"
+
+[tool.bandit]
+targets = "."
+exclude = "tests"
+

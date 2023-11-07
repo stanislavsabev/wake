@@ -1,6 +1,7 @@
 # User
 .ignore/
 .vscode/
+testing/
 .python-cfg
 
 # Byte-compiled / optimized / DLL files
