@@ -1,13 +1,17 @@
 """CLI entry point."""
+import logging
 import os
 import sys
 
 from win_make import engine, parser
 
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 FILE_NAME = "win-makefile"
 
 
-def main():
+def main() -> None:
     """CLI entry point."""
     if not os.path.isfile(FILE_NAME):
         raise FileNotFoundError(f"Current directory does not contain '{FILE_NAME}'")
@@ -35,6 +39,6 @@ def main():
     if args:
         label = parser_obj.parse_args(label, args)
 
-    engine.exec_label(label, args, dict(**os.environ.items()))
+    engine.exec_label(label, args, dict(os.environ.items()))
 
-    print(f"found {label.short}/{label.name=}")
+    logger.info(f"found {label.short=}/{label.name=}")
