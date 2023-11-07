@@ -61,17 +61,17 @@ Token = namedtuple("Token", ["typ", "val"], defaults=["", ""])
 EOF_TOKEN = Token(typ="EOF", val="")
 
 
-class Statement:
-    """Statement class used in parser."""
+# class Statement:
+#     """Statement class used in parser."""
 
-    typ: str
-    text: str | "Statement" | "StatementList"
+#     typ: str
+#     text: str | "Statement" | "StatementList"
 
 
-class StatementList:
-    """StatementList class used in parser."""
+# class StatementList:
+#     """StatementList class used in parser."""
 
-    statements: "Statement" | "StatementList"
+#     statements: "Statement" | "StatementList"
 
 
 class Flag:
@@ -102,14 +102,14 @@ class Label:
     params: list[Param]
     doc: str | None
 
-    contents: StatementList
+    contents: list[str]
 
 
 class Model:
     """Model class used in parser."""
 
     shell: str
-    vars: dict[str, str | list[str]]
+    vars_: dict[str, str | list[str]]
     labels: list[Label]
 
 
@@ -122,11 +122,11 @@ class Tokenizer:
         self._spec = common_spec
         self._cursor = 0
 
-    def set_contents(self, contents):
+    def set_contents(self, contents: str) -> None:
         """Set tokenizer contents."""
         self._contents = contents
 
-    def get_next_token(self, ignore_ws=True, spec: dict[str, str] | None = None) -> Token:
+    def get_next_token(self, ignore_ws: bool = True, spec: dict[str, str] | None = None) -> Token:
         """Gets the next token in the input string.
 
         Returns:
@@ -158,7 +158,7 @@ class Tokenizer:
 
         before = max(0, self._cursor - 5)
         after = min(self._cursor + 5, len(self._contents))
-        line = self._contents[before, after]
+        line = self._contents[before:after]
         err_line = 4 * "~" * bool(before) + "^^" + 4 * "~" * bool(after)
         err_line = "\n".join([line, err_line])
         raise SyntaxError(f"Unexpected token: at pos {self._cursor:N}\n{err_line}")
@@ -212,7 +212,7 @@ class Parser:
             elif lookahead.typ == "variable":
                 self.consume(EQ)
                 var_val = self.variable_value()
-                model.vars[lookahead.val] = var_val
+                model.vars_[lookahead.val] = var_val
             elif lookahead.typ == "label":
                 pass
             else:
