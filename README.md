@@ -1,28 +1,29 @@
 # wake
 Build tool for windows, similar to `make`
 
+**NOTE:** Still in progress
 
 ## installation
 
-```bash
-pip install -m venv .venv
-.venv/bin/activate
-pip install wake
+```powershell
+> pip install -m venv .venv
+> .venv\Scripts\activate
+> pip install wake
 ```
 
 ## Setup and run
 
-- Create file named `wake` in root directory
-- Add labels (see [sample wake](#sample-wake))
+- Create file named `wakefile` in root directory
+- Add labels (see [sample wakefile](#sample-wake))
 - Run
-  ```wake <label-name>``` 
+  ```wake <label-name>```
 
 
-## Sample wake
+## Sample *wakefile*
 
 **NOTE: Still in progress**
 
-```bash
+```powershell
 # This is a comment
 
 # Choose between cmd or powershell, default is cmd
@@ -33,14 +34,14 @@ shell := cmd
 VAR_NAME=myvar
 
 
-# This is a label. The syntax is actually 
+# This is a label. The syntax is actually
 # label - colon - <options-list> - colon
 # label: @flags: --o/opt @params: --k/key=val @deps: another-label @doc: ... :
 label::
     # this is a shell command
     echo hello
 
-# i/install is a label with shortcut. 
+# i/install is a label with shortcut.
 # Shortcuts work with flags and params too, but there
 # the short form must be called with single - and long form with --.
 # @params is a build-in and expects
@@ -59,9 +60,9 @@ venv: @params: e/venv=(env venv .venv) @doc: Create virtual environment :
 # Multi-line label definitions are allowed
 # @deps means that the `venv` label will be executed first with provided flags and params
 # @flags is a build-in, flags are `true` if defined and `false` if omitted
-i/install: 
+i/install:
     @deps: venv -d --venv=env
-    @flags: d/dev 
+    @flags: d/dev
     @doc: Install requirementsvenv
     :
     pip install pip-tools
@@ -78,7 +79,7 @@ i/install:
 # Param --mode is restricted to the values listed in the tuple, and default is DEBUG
 # @doc, The colon after usage needs to be escaped with \, alternatively,
 #       string can be wrapped in "" - "Usage: my-package [foo | bar]"
-r/run: 
+r/run:
     @params: run=* m/mode=DEBUG(DEBUG,RELEASE)
     @doc: Usage\: my-package [foo | bar]
     :
@@ -110,8 +111,8 @@ h/help::
 # --single is restricted to one value
 # --one-three is between one and three values
 # Tuples are space delimited, if a value contains spaces, it needs to be wrapped in quotes
-other: @flags a b c
-    @params 
+other: @flags: a b c
+    @params:
         foos=(foo bar "foo bar")
         a/any=*
         s/single=*1
@@ -145,4 +146,3 @@ other: @flags a b c
         echo @params.one-three
 
 ```
-
