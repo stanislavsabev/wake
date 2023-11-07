@@ -1,6 +1,21 @@
-## Usage
+# Usage
 
-### Create win-makefile
+## installation
+
+```bash
+pip install -m venv .venv
+.venv/bin/activate
+pip install win-make
+```
+
+## Setup and run
+
+- Create file named `win-makefile` in root directory
+- Add labels (see [sample win-makefile](#sample-win-makefile))
+- Run
+  ```win-make <label-name>```
+
+## Sample win-makefile
 
 ```bash
 # This is a comment
