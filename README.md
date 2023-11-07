@@ -14,7 +14,7 @@ Build tool for windows, similar to `make`
 ## Setup and run
 
 - Create file named `wakefile` in root directory
-- Add labels (see [sample wakefile](#sample-wake))
+- Add labels (see sample [wakefile](#sample-wake))
 - Run
   ```wake <label-name>```
 
