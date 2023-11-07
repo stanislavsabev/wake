@@ -97,7 +97,11 @@ ignore_missing_imports = true
 [tool.flake8]
 per-file-ignores= "__init__:F401"
 ignore = [
-    "D104", "D107"
+    "D104","D107"
+]
+extend-ignore = [
+    # See https://github.com/PyCQA/pycodestyle/issues/373
+    "E203"
 ]
 max-line-length = 99
 count = true
