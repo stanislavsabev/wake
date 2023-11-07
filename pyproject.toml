@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-    name = "win-make"
+    name = "wake"
     description = "Build tool for windows, similar to make on Linux"
 version = "0.0.1"
 dynamic = ["readme"]
@@ -46,14 +46,14 @@ dev = [
 ]
 
 [project.scripts]
-    win-make = "win_make.cli:main"
+    wake = "wake.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/stanislavsabev/win-make"
-Repository = "https://github.com/stanislavsabev/win-make.git"
-"Bug Tracker" = "https://github.com/stanislavsabev/win-make/issues"
-Documentation = "https://github.com/stanislavsabev/win-make/blob/main/README.md"
-Usage = "https://github.com/stanislavsabev/win-make/blob/main/USAGE.md"
+Homepage = "https://github.com/stanislavsabev/wake"
+Repository = "https://github.com/stanislavsabev/wake.git"
+"Bug Tracker" = "https://github.com/stanislavsabev/wake/issues"
+Documentation = "https://github.com/stanislavsabev/wake/blob/main/README.md"
+Usage = "https://github.com/stanislavsabev/wake/blob/main/USAGE.md"
 
 [tool.pytest.ini_options]
 testpaths = [

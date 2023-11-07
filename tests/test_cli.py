@@ -1,5 +1,5 @@
 """Test CLI entry point."""
-from win_make import cli
+from wake import cli
 
 
 def test_cli(capsys):

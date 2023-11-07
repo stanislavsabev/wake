@@ -5,17 +5,17 @@
 ```bash
 pip install -m venv .venv
 .venv/bin/activate
-pip install win-make
+pip install wake
 ```
 
 ## Setup and run
 
-- Create file named `win-makefile` in root directory
-- Add labels (see [sample win-makefile](#sample-win-makefile))
+- Create file named `wake` in root directory
+- Add labels (see [sample wake](#sample-wake))
 - Run
-  ```win-make <label-name>```
+  ```wake <label-name>```
 
-## Sample win-makefile
+## Sample wake
 
 ```bash
 # This is a comment
@@ -42,7 +42,7 @@ label::
 #   --key=value pairs, --key=* means any value
 # --e/venv is restricted to the values in the tuple
 # Example call:
-#   win-make venv -e env
+#   wake venv -e env
 venv: @params: e/venv=(env venv .venv) @doc: Create virtual environment :
     # Set variable using params shortcut for venv
     venv_name=@params.e

@@ -181,20 +181,20 @@ class Tokenizer:
 
 
 class Parser:
-    """Parser for win-make file."""
+    """Parser for wakefile."""
 
     def __init__(self) -> None:
         self.tokenizer = Tokenizer()
         self.lookahead = EOF_TOKEN
 
     def parse_makefile(self, contents: str) -> Model:
-        """Parse win-makefile contents.
+        """Parse wake contents.
 
         Args:
             contents (str): A string with file contents
 
         Returns:
-            A Model: win-makefile model
+            A Model: wake model
         """
         model = Model()
         self.tokenizer.set_contents(contents)

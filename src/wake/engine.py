@@ -1,7 +1,7 @@
 """Command execution engine."""
 from collections import namedtuple
 
-from win_make import parser
+from wake import parser
 
 Std = namedtuple("Std", ["in_", "out", "err"])
 

@@ -3,12 +3,12 @@ import logging
 import os
 import sys
 
-from win_make import engine, parser
+from wake import engine, parser
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-FILE_NAME = "win-makefile"
+FILE_NAME = "wake"
 
 
 def main() -> None:
