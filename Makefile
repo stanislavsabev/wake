@@ -1,5 +1,6 @@
 SHELL := /bin/bash
-PROJ_NAME=vba_parser
+PROJ_NAME=wake
+VENV_NAME=.venv
 
 # If the first argument is "rename"...
 ifeq (rename,$(firstword $(MAKECMDGOALS)))
@@ -23,20 +24,19 @@ rename: ## Rename this project. Args: <new-proj-name>
 		[ -f "$$f" ] && sed -i 's/$(PROJ_NAME)/$(RUN_ARGS)/g' $$f; \
 	done
 
-
 init: ## Install package and its dependencies into virtual environment
-	python -m venv .venv
-	source .venv/bin/activate \
+	python -m venv $(VENV_NAME)
+	source $(VENV_NAME)/bin/activate \
 	&& python -m pip install --upgrade pip \
 	&& pip install -r requirements-dev.txt \
 	&& pip install -e .
 
 run: ## Run example
-	source .venv/bin/activate \
+	source $(VENV_NAME)/bin/activate \
 	&& python -m example
 
 clean: ## Clean virtual environment
-	rm -rf .venv
+	rm -rf $(VENV_NAME)
 	rm -rf src/$(PROJ_NAME).egg-info
 	find . -name "__pycache__" -type d -exec rm -rf {} +
 	find . -name ".pytest_cache" -type d -exec rm -rf {} +

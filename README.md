@@ -1,7 +1,7 @@
 # wake
 Build tool for windows, similar to `make`
 
-![alt text](https://github.com/stanislavsabev/wake/blob/main/wake.jpg?raw=true)
+![alt text](https://github.com/stanislavsabev/wake/blob/main/assets/wake.jpg?raw=true)
 
 **NOTE:** Still in progress
 
