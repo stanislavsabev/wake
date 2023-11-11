@@ -1,7 +1,7 @@
 # This is a comment
 
 # Choose between cmd or powershell, default is cmd
-shell := cmd
+@shell: cmd
 
 
 # This is a variable and it is used like this - $(VAR_NAME)
