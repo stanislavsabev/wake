@@ -1,17 +1,18 @@
 # wake
 Build tool for windows, similar to `make`
 
+![alt text](https://github.com/stanislavsabev/wake/blob/main/wake.jpg?raw=true)
+
 **NOTE:** Still in progress
 
 ## installation
 
 ```powershell
-> pip install -m venv .venv
-> .venv\Scripts\activate
-> pip install wake
+> git clone https://github.com/stanislavsabev/wake
+> pip install .
 ```
 
-## Setup and run
+## Usage
 
 - Create file named `wakefile` in root directory
 - Add labels (see sample [wakefile](#sample-wake))
@@ -27,7 +28,7 @@ Build tool for windows, similar to `make`
 # This is a comment
 
 # Choose between cmd or powershell, default is cmd
-shell := cmd
+@shell: cmd
 
 
 # This is a variable and it is used like this - $(VAR_NAME)
