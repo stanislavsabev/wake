@@ -16,6 +16,7 @@ classifiers = [
     "Development Status :: 1 - Planning",
     "Natural Language :: English",
     "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
@@ -53,7 +54,6 @@ Homepage = "https://github.com/stanislavsabev/wake"
 Repository = "https://github.com/stanislavsabev/wake.git"
 "Bug Tracker" = "https://github.com/stanislavsabev/wake/issues"
 Documentation = "https://github.com/stanislavsabev/wake/blob/main/README.md"
-Usage = "https://github.com/stanislavsabev/wake/blob/main/USAGE.md"
 
 [tool.pytest.ini_options]
 testpaths = [
