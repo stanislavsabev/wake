@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 PROJ_NAME=wake
-VENV_NAME=.venv
+VENV_NAME=../.venv
 
 # If the first argument is "rename"...
 ifeq (rename,$(firstword $(MAKECMDGOALS)))
@@ -28,7 +28,7 @@ init: ## Install package and its dependencies into virtual environment
 	python -m venv $(VENV_NAME)
 	source $(VENV_NAME)/bin/activate \
 	&& python -m pip install --upgrade pip \
-	&& pip install -r requirements-dev.txt \
+	&& pip install -r requirements/requirements-dev.txt \
 	&& pip install -e .
 
 run: ## Run example
