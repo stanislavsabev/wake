@@ -1,7 +1,8 @@
 """Command execution engine."""
 from collections import namedtuple
 
-from wake import parser
+from wake import typedef
+from wake import pars
 
 Std = namedtuple("Std", ["in_", "out", "err"])
 
@@ -17,7 +18,7 @@ def cmd(text: str) -> Std:
     return Std(None, None, None)
 
 
-def exec_label(label: parser.Label, args: list[str], environ: dict[str, str]) -> None:
+def exec_label(production: typedef.AnyDict, args: list[str], environ: dict[str, str]) -> None:
     """Executes all shell commands in label contents.
 
     Args:
@@ -28,5 +29,4 @@ def exec_label(label: parser.Label, args: list[str], environ: dict[str, str]) ->
     Returns:
         standard stream - in, out, err
     """
-    for line in label.contents:
-        cmd(line)
+    pass
