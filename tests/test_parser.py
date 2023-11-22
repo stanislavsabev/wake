@@ -80,6 +80,23 @@ class TestVariable:
         assert actual == variable
 
     @pytest.mark.parametrize(
+        "string, expected",
+        [
+            ("VAR", None)
+            ("VAR", None)
+            ("VAR", None)
+            ("VAR", None)
+            ("VAR", None)
+            ("VAR", None)
+        ],
+    )
+    def test_variable_ok(self, parser, string, expected):
+        actual = parser.parse(string)
+        variable = dict(type="variable", value=dict(type="string", value=expected))
+        assert actual == variable
+
+
+    @pytest.mark.parametrize(
         "string, expected_err",
         [
             ('VAR=="foo"', SyntaxError),

@@ -28,7 +28,7 @@ dependencies = [
 ]
 
 [tool.setuptools.dynamic]
-readme = {file = ["README.md", "USAGE.md"]}
+readme = {file = ["README.md"]}
 
 [project.optional-dependencies]
 dev = [

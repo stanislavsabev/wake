@@ -16,7 +16,7 @@ COMMENT = r"#.*$"
 NL = r"\n"
 NON_WS = r"\S*"
 WS = r"[^\S\r\n]*"
-IDENTIFIER = r""
+IDENTIFIER = r"[a-zA-Z_]+(?:(?:_(?!-)|-(?!_))|[a-zA-Z0-9])*[a-zA-Z0-9_]+"
 
 spec: list[Pattern] = [
     Pattern(WS, "WS"),
@@ -24,7 +24,8 @@ spec: list[Pattern] = [
     Pattern(NUMBER, "NUMBER"),
     Pattern(STRING, "STRING"),
     # Pattern(NON_WS, "NON_WS"),
-    # Pattern(IDENTIFIER, "IDENTIFIER"),
+    Pattern(IDENTIFIER, "IDENTIFIER"),
+    Pattern(NL, "NL"),
 ]
 
 
@@ -117,7 +118,7 @@ class Parser:
         self.string = string
         self.tokenizer.string = string
         self.lookahead = self.tokenizer.get_next()
-        return self.literal()
+        return self.variables()
 
     def wakefile(self) -> AnyDict:
         # statement list
@@ -125,18 +126,47 @@ class Parser:
 
         if variables := self.variables():
             value.update(variables=variables)
-        if productions := self.productions():
-            value.update(productions=productions)
+        if procecures := self.procecures():
+            value.update(procecures=procecures)
 
-        return Token(type="wakefile", value=value)
+        return dict(type="wakefile", value=value)
 
     def variables(self) -> list[AnyDict]:
         variables = []
+        while self.lookahead != "LABEL":
+            statement = self.statement()
+            variables.append(statement)
         return variables
 
-    def productions(self) -> list[AnyDict]:
-        productions = []
-        return productions
+    def procecures(self) -> list[AnyDict]:
+        procecures = []
+        return procecures
+
+    def statement(self) -> AnyDict:
+        if self.lookahead == "IDENTIFIER":
+            return self.variable_statement()
+        else:
+            return self.literal()
+
+    def variable_statement(self) -> AnyDict:
+        name = self._consume("IDENTIFIER")
+        self._consume("=")
+        initializer = self.variable_initializer()
+        variable_declaration = dict(
+            type="variable_declaration",
+            id=dict(
+                type="identifier",
+                name=name,
+                init=initializer,
+            ),
+        )
+        return dict(type="variable_statement", value=variable_declaration)
+
+    def variable_initializer(self) -> AnyDict | None:
+        if self.lookahead.type == "NL":
+            return None
+        expression = dict()
+        return dict(variable_initializer=expression)
 
     def literal(self) -> AnyDict:
         value = EOF_TOKEN
