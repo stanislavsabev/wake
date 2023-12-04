@@ -1,6 +1,6 @@
 SHELL := /bin/bash
-PROJ_NAME=wake
-VENV_NAME=../.venv
+PROJ_NAME=pm
+VENV_PATH=$$(cat .python-cfg)
 
 # If the first argument is "rename"...
 ifeq (rename,$(firstword $(MAKECMDGOALS)))
@@ -10,37 +10,72 @@ ifeq (rename,$(firstword $(MAKECMDGOALS)))
   $(eval $(RUN_ARGS):;@:)
 endif
 
-.PHONY: package help
-
+.PHONY: help
 help: ## Show this message
 	@awk 'BEGIN {FS = ":.*##"; printf "Usage:\n  make \033[36m<target> [args...]\033[0m\n\nTargets:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
-
+.PHONY: rename
 rename: ## Rename this project. Args: <new-proj-name>
 	@echo renaming project to: $(RUN_ARGS)
-	@mv src/$(PROJ_NAME) src/$(RUN_ARGS)
-	@for f in $$(find . -name "*.py") Makefile README.md setup.cfg; \
+	@mv src/$(PROJ_NAME) $(RUN_ARGS)
+	@for f in $$(find . -name "*.py") Makefile README.md pyproject.toml; \
 		do \
 		[ -f "$$f" ] && sed -i 's/$(PROJ_NAME)/$(RUN_ARGS)/g' $$f; \
 	done
 
-init: ## Install package and its dependencies into virtual environment
-	python -m venv $(VENV_NAME)
-	source $(VENV_NAME)/bin/activate \
+.PHONY: init
+init: ## Install package and its dependencies
+	python -m venv $(VENV_PATH)
+	source $(VENV_PATH)/bin/activate \
 	&& python -m pip install --upgrade pip \
-	&& pip install -r requirements/requirements-dev.txt \
+	&& pip install pip-tools \
+	&& pip-compile requirements/requirements.in \
+	&& pip-compile requirements/requirements-dev.in \
+	&& pip-sync requirements/requirements.txt requirements/requirements-dev.txt \
 	&& pip install -e .
 
-run: ## Run example
-	source $(VENV_NAME)/bin/activate \
-	&& python -m example
+.PHONY: update
+req-update: ## Update requirements
+	source $(VENV_PATH)/bin/activate \
+	&& pip-compile requirements/requirements.in \
+	&& pip-compile requirements/requirements-dev.in \
+	&& pip-sync requirements/requirements.txt requirements/requirements-dev.txt
 
-clean: ## Clean virtual environment
-	rm -rf $(VENV_NAME)
-	rm -rf src/$(PROJ_NAME).egg-info
+.PHONY: run
+run: ## Run example
+	@source $(VENV_PATH)/bin/activate \
+	&& python -m testing.run
+
+.PHONY: delete-venv
+delete-venv: ## Delete virtual environment
+	rm -rf $(VENV_PATH)
+	rm -rf $(PROJ_NAME).egg-info
+
+.PHONY: clean
+clean: ## Clean cache
 	find . -name "__pycache__" -type d -exec rm -rf {} +
 	find . -name ".pytest_cache" -type d -exec rm -rf {} +
 
+.PHONY: cleanall
+cleanall: clean delete-venv ## Clean cache and venv
+
+.PHONY: open-cfg
+open-cfg: ## Open config
+	code ~/.pm
+
+.PHONY: format
+format:
+	black $(PROJ_NAME)
+	isort $(PROJ_NAME)
+
+.PHONY: check
+check:
+	black --check $(PROJ_NAME) \
+	& isort --check $(PROJ_NAME) \
+	& flake8 $(PROJ_NAME) \
+	& mypy $(PROJ_NAME)
+
+.PHONY: package
 package: ## Package the project into .zip file
 	rm -rf .$(PROJ_NAME)
 	mkdir .$(PROJ_NAME)
