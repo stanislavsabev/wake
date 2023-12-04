@@ -2,8 +2,9 @@
 import logging
 import os
 import sys
+from src.wake import parser
 
-from wake import engine, pars
+from wake import engine
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -22,8 +23,8 @@ def main() -> None:
     with open(FILE_NAME, "r", encoding="utf-8") as fd:
         contents = fd.read()
 
-    parser_obj = pars.Parser()
-    model: pars.Model = parser_obj.parse_makefile(contents)
+    parser_obj = parser.Parser()
+    model: parser.Model = parser_obj.parse_makefile(contents)
     if not model.labels:
         raise ValueError(f"'{FILE_NAME}' is missing label definitions.")
 

@@ -82,12 +82,12 @@ class TestVariable:
     @pytest.mark.parametrize(
         "string, expected",
         [
+            ("aVaR", None)
+            ("_var_", None)
+            ("V_a__r", None)
             ("VAR", None)
-            ("VAR", None)
-            ("VAR", None)
-            ("VAR", None)
-            ("VAR", None)
-            ("VAR", None)
+            ("var", None)
+            ("___VAr___", None)
         ],
     )
     def test_variable_ok(self, parser, string, expected):

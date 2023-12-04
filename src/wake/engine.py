@@ -2,7 +2,7 @@
 from collections import namedtuple
 
 from wake import typedef
-from wake import pars
+from src.wake import parser
 
 Std = namedtuple("Std", ["in_", "out", "err"])
 
