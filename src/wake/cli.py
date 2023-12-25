@@ -2,9 +2,10 @@
 import logging
 import os
 import sys
-from src.wake import parser
 
 from wake import engine
+from wake.parser import Parser
+from wake.typedef import AnyDict
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -23,17 +24,14 @@ def main() -> None:
     with open(FILE_NAME, "r", encoding="utf-8") as fd:
         contents = fd.read()
 
-    parser_obj = parser.Parser()
-    model: parser.Model = parser_obj.parse_makefile(contents)
-    if not model.labels:
+    parser_obj = Parser()
+    ast: AnyDict = parser_obj.parse_makefile(contents)
+    if not ast:
         raise ValueError(f"'{FILE_NAME}' is missing label definitions.")
 
     label_name = sys.argv[1]
 
-    for label in model.labels:
-        if label_name in [label.name, label.short]:
-            break
-    else:
+    if label not in ast:
         raise ValueError(f"Could not find label '{label_name}'")
 
     args = sys.argv[2:]
