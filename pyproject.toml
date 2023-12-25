@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
     name = "wake"
     description = "Build tool for windows, similar to make on Linux"
-version = "0.0.1"
+version = "0.0.1dev0"
 dynamic = ["readme"]
 authors = [
     {name = "Stanislav Sabev", email = "stanislav.sabev@gmail.com"},
@@ -99,9 +99,12 @@ scripts_are_modules = true
 non_interactive = true
 
 [tool.flake8]
-per-file-ignores= "__init__:F401"
+per-file-ignores= [
+    "__init__:F401",
+    "tests/* :D"
+]
 ignore = [
-    "D104","D107"
+    "D104","D107","D100"
 ]
 extend-ignore = [
     # See https://github.com/PyCQA/pycodestyle/issues/373
