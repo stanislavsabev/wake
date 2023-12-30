@@ -2,15 +2,29 @@ from wake.tokenizer import EOF, EOF_TOKEN, Token, Tokenizer
 from wake.typedef import AnyDict
 
 
+EMPTY_PRODUCTION = {"type": "Empty"}
+
+
 class Parser:
+    """Parser for the wakefile."""
+
     def __init__(self) -> None:
         self.string = ""
         self.tokenizer = Tokenizer()
         self.lookahead = EOF_TOKEN
 
     def parse(self, string) -> AnyDict:
+        """Parses provided string.
+
+        Args:
+            string: str to parse.
+
+        Returns:
+            A dict with parsed AST.
+        """
         self.string = string
         self.tokenizer.string = string
+
         self.lookahead = self.tokenizer.get_next()
         # return self.variables()
         return {}
@@ -58,38 +72,46 @@ class Parser:
     #         return self.literal()
 
     def variable_declaration(self) -> AnyDict:
-        # name = self._consume("IDENTIFIER")
-        # self._consume("=")
-        # initializer = self.variable_initializer()
-        # variable_declaration = dict(
-        #     type="variable_declaration",
-        #     id=dict(
-        #         type="identifier",
-        #         name=name,
-        #         init=initializer,
-        #     ),
-        # )
+        """Variable declaration production."""
+        if self.lookahead.type == "IDENTIFIER":
+            name = self._consume("IDENTIFIER")
+            declarator = {"type": "Identifier", "name": name.value}
+        else:
+            raise ValueError(
+                f"Invalid token type {self.lookahead.type}, expected identifier."
+            )
 
-        return {}
+        self._consume("=")
+        initializer = self.variable_initializer()
+        result = {
+            "type": "VariableDeclaration",
+            "value": {
+                "type": "VariableDeclarator",
+                "id": declarator,
+                "init": initializer,
+            },
+        }
+        return result
 
-    # def variable_initializer(self) -> AnyDict | None:
-    #     if self.lookahead.type == "NEWLINE":
-    #         return None
-    #     expression = dict()
-    #     return dict(variable_initializer=expression)
+    def variable_initializer(self) -> AnyDict:
+        """Variable initializer production."""
+        if self.lookahead.type == "NEWLINE":
+            self._consume("NEWLINE")
+            return EMPTY_PRODUCTION
+        # TODO: [2023/12/26, 12:17:13] Change this to
+        # an expression production, after implementing it.
+        expression = self.literal()
+        return expression
 
-    # def literal(self) -> AnyDict:
-    #     value = EOF_TOKEN
-    #     if self.lookahead.type == "NUMBER":
-    #         value = self.number_lit()
-    #     elif self.lookahead.type == "STRING":
-    #         value = self.string_lit()
-    #     return dict(type="literal", value=value)
-
-    # def number_lit(self) -> AnyDict:
-    #     token = self._consume("NUMBER")
-    #     return dict(type="number", value=int(token.value))
-
-    # def string_lit(self) -> AnyDict:
-    #     token = self._consume("STRING")
-    #     return dict(type="string", value=token.value[1:-1])
+    def literal(self) -> AnyDict:
+        """Literal production."""
+        result = {"type": "Literal"}
+        if self.lookahead.type == "INTEGER":
+            token = self._consume("INTEGER")
+            result.update({"value": int(token.value), "raw": token.value})
+        elif self.lookahead.type == "STRING":
+            token = self._consume("STRING")
+            result.update({"value": token.value[1:-1], "raw": token.value})
+        else:
+            raise ValueError(f"Unsupported literal {token.value}")
+        return result

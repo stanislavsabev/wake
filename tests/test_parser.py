@@ -1,5 +1,3 @@
-import json
-
 import pytest
 
 from wake.parser import Parser
@@ -63,57 +61,32 @@ class TestVariable:
         "parser, expected",
         [
             (
-                'VAR="foo"',
-                """
-{
-      "type": "VariableDeclaration",
-      "kind": "var",
-      "declarations": [
-        {
-          "type": "VariableDeclarator",
-          "id": {
-            "type": "Identifier",
-            "name": "VAR"
-          },
-          "init": {
-            "type": "Literal",
-            "value": "foo",
-            "raw": "\"foo\""
-          }
-        }
-        """,
-            ),
-            (
-                "VAR=1",
-                """
-      "type": "VariableDeclaration",
-      "kind": "var",
-      "declarations": [
-        {
-          "type": "VariableDeclarator",
-          "id": {
-            "type": "Identifier",
-            "name": "VAR"
-          },
-          "init": {
-            "type": "Literal",
-            "value": 1,
-            "raw": "1"
-          }
-        }
-        """,
-            ),
-            # ("VAR=foo_bar", ""),
-            # ("VAR=_foo", ""),
-            # ("VAR=foo", ""),
+                f"VAR={raw}",
+                {
+                    "type": "VariableDeclaration",
+                    "value": {
+                        "type": "VariableDeclarator",
+                        "id": {
+                            "type": "Identifier",
+                            "name": "VAR",
+                        },
+                        "init": {
+                            "type": "Literal",
+                            "value": value,
+                            "raw": raw,
+                        },
+                    },
+                },
+            )
+            for value, raw in [("foo", '"foo"'), (1, "1")]
         ],
         indirect=["parser"],
     )
-    def test_variable_declaration_nominal(self, parser: Parser, expected):
+    def test_variable_declaration_literal(self, parser: Parser, expected):
         # parser.string = string
         # parser.lookahead = parser.tokenizer.get_next()
         actual = parser.variable_declaration()
-        assert actual == json.loads(expected)
+        assert actual == expected
 
     # @pytest.mark.parametrize(
     #     "string, expected",

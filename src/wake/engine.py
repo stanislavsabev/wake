@@ -17,7 +17,9 @@ def cmd(text: str) -> Std:
     return Std(None, None, None)
 
 
-def exec_label(production: typedef.AnyDict, args: list[str], environ: dict[str, str]) -> None:
+def exec_label(
+    production: typedef.AnyDict, args: list[str], environ: dict[str, str]
+) -> None:
     """Executes all shell commands in label contents.
 
     Args:

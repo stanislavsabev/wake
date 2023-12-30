@@ -1,32 +1,46 @@
 import collections
 import re
+import locale
 
 Pattern = collections.namedtuple("Pattern", ["regexp", "name"])
 Token = collections.namedtuple("Token", ["type", "value"], defaults=["", ""])
 
 EOF = "EOF"
 EOF_TOKEN = Token(type=EOF, value="")
+DECIMAL_POINT = locale.localeconv().get("decimal_point")
 
-NUMBER = r"\d+"
+# Literals
+INTEGER = r"\d+"
+FLOAT = INTEGER + DECIMAL_POINT + INTEGER
 STRING = r"([\"'])(?:(?=(\\?))\2.)*?\1"
+
+# Operators
+EQUALS = r"="
+
+# Whitespace
 COMMENT = r"#.*$"
 NEWLINE = r"\n"
 NON_WS = r"\S*"
 WS = r"[^\S\r\n]*"
+
 IDENTIFIER = r"(?:[a-zA-Z]|_+[a-zA-Z0-9])+[a-zA-Z0-9_]*"
 
 spec: list[Pattern] = [
     Pattern(WS, "WS"),
     Pattern(COMMENT, "COMMENT"),
-    Pattern(NUMBER, "NUMBER"),
+    Pattern(INTEGER, "INTEGER"),
+    Pattern(FLOAT, "FLOAT"),
     Pattern(STRING, "STRING"),
     # Pattern(NON_WS, "NON_WS"),
     Pattern(IDENTIFIER, "IDENTIFIER"),
     Pattern(NEWLINE, "NEWLINE"),
+    Pattern(EQUALS, "="),
 ]
 
 
 class Tokenizer:
+    """Tokenizer for the wake syntax."""
+
     def __init__(self) -> None:
         self.string = ""
         self.cursor = 0
@@ -56,10 +70,11 @@ class Tokenizer:
             if token_type == "COMMENT":
                 return self.get_next()
 
-            return Token(
+            token = Token(
                 type=token_type,
                 value=value,
             )
+            return token
 
         raise SyntaxError(f"Unexpected token: '{string[0]}'.")
 
