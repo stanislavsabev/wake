@@ -76,6 +76,13 @@ check: ## Check with mypy and flake8
 .PHONY: checkall
 checkall: format check ## Format and check with mypy and flake8
 
+.PHONY: build
+build: format check test ## Format and check with mypy and flake8
+
+.PHONY: test
+test: ## Run pytest with coverage
+	pytest
+
 .PHONY: package
 package: ## Package the project into .zip file
 	rm -rf .$(PROJ_DIR)

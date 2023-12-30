@@ -38,6 +38,7 @@ class Parser:
 
         self.lookahead = self.tokenizer.get_next()
         return token
+
     def variables(self) -> list[AnyDict]:
         variables = []
         while self.lookahead != "LABEL":
